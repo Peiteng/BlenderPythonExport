@@ -1,0 +1,23 @@
+I see 3 options :
+
+Looping through object.bl_rna.properties.items() (I think this is the preferred way since this is supported by the API)
+
+Looping through dir(object), which is the python way so you might break things if you try to use these attributes if they are not exposed to bl_rna.
+
+Looking in the official documentation, which at least gives examples and explanations about each attribute.
+
+import bpy
+
+obj = bpy.context.object    
+
+print('Using bl_rna :\n')
+
+for prop, value in obj.bl_rna.properties.items():
+
+   print(prop, value)        
+
+print('\nUsing dir(object) :\n')
+
+for attr in dir(obj):
+
+    print(str(attr), getattr(obj, attr))
