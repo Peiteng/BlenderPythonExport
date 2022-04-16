@@ -4,6 +4,7 @@ collection_type='lights'
 lights_list=[];
 for obj in  bpy.data.lights:
     print('current light:',obj.type)
+    print('current name:',obj.name)
     info_json={};
     
     info_json['name']=obj.name

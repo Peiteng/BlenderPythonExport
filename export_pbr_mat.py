@@ -1,6 +1,15 @@
 import bpy
 #--------save all materials name------------------
 print('-----------all material name---------------------')
+def followLinks(node_in):
+    for n_inputs in node_in.inputs:
+        for node_links in n_inputs.links:
+            print("going to " + node_links.from_node.name)
+#            followLinks(node_links.from_node)
+def use_tex(n_inputs):
+        
+        for node_links in n_inputs.links:
+            print("going to " + node_links.from_node.name)
 
 
 mat_info_list=[];
@@ -11,15 +20,30 @@ for each_mat in bpy.data.materials:
     mat_info['name']=each_mat.name
     mat_info['use_node']=each_mat.use_nodes
     if(each_mat.use_nodes):
-        metallic=each_mat.node_tree.nodes["Principled BSDF"].inputs[4].default_value
+        mat_node=each_mat.node_tree.nodes["Principled BSDF"]
+        
+#        followLinks(mat_node);
+        metallic=mat_node.inputs[4].default_value
         mat_info['metallic']=metallic
-        specular=each_mat.node_tree.nodes["Principled BSDF"].inputs[5].default_value
+        specular=mat_node.inputs[5].default_value
         mat_info['specular']=specular
-        roughness=each_mat.node_tree.nodes["Principled BSDF"].inputs[7].default_value
+        roughness=mat_node.inputs[7].default_value
         mat_info['roughness']=roughness
         
-        color_vec=each_mat.node_tree.nodes["Principled BSDF"].inputs[0].default_value
+        
+        emissive_color=mat_node.inputs[17].default_value
+        mat_info['emissive_color']=[emissive_color[0],emissive_color[1],emissive_color[2]]
+        #if linked, get the texture img source
+        if mat_node.inputs[17].is_linked:
+            use_tex(mat_node.inputs[17]);
+        
+        emissive_inten=mat_node.inputs[18].default_value
+        mat_info['emissive_inten']=emissive_inten
+        
+        color_vec=mat_node.inputs[0].default_value
         mat_info['color']=[color_vec[0],color_vec[1],color_vec[2]]
+                
+       
     else:
         metallic=each_mat.metallic
         mat_info['metallic']=metallic
@@ -55,6 +79,7 @@ blender_mat_info['obj_mat']=obj_mat_list
 
 print('----write to json file-----')
 import json
+
 with open('objects_mat.json','w') as f:
     json.dump(blender_mat_info, f,indent=4,sort_keys=True)
 print('----objects mat done-----')
