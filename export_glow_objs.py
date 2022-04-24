@@ -1,6 +1,7 @@
 import bpy
 
-glow_objs_type='glow_objs'
+#objects;glow_objs;lights_objs
+glow_objs_type='sub_objs'
 
 #---------unselect all objs in all collections
 for collection in bpy.data.collections:
@@ -44,14 +45,17 @@ for collection in bpy.data.collections:
             #---export obj            
          
             bpy.ops.export_scene.obj(filepath='./'+obj.name+'.obj',
-                use_selection=True,axis_up='Y')
+                use_selection=True,axis_up='Y',
+                path_mode='RELATIVE')
         
             #translate the object back
             bpy.data.objects[obj.name].location=origin_loc
             #--deselect this obj            
             obj.select_set(False)
 import json
-with open('glow_objs_info.json','w') as f:
+
+json_file_name=glow_objs_type+'_info.json'
+with open(json_file_name,'w') as f:
     json.dump(glow_objs_list, f,indent=4,sort_keys=True)
     
      

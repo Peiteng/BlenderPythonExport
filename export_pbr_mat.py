@@ -6,11 +6,11 @@ def followLinks(node_in):
         for node_links in n_inputs.links:
             print("going to " + node_links.from_node.name)
 #            followLinks(node_links.from_node)
-def use_tex(n_inputs):
+def findTexLink(n_inputs):
         
         for node_links in n_inputs.links:
             print("going to " + node_links.from_node.name)
-
+            findTexLink(node_links.from_node)
 
 mat_info_list=[];
 
@@ -30,13 +30,10 @@ for each_mat in bpy.data.materials:
         roughness=mat_node.inputs[7].default_value
         mat_info['roughness']=roughness
         
-        
+        mat_info['emissive_use_tex']=mat_node.inputs[17].is_linked
         emissive_color=mat_node.inputs[17].default_value
         mat_info['emissive_color']=[emissive_color[0],emissive_color[1],emissive_color[2]]
-        #if linked, get the texture img source
-        if mat_node.inputs[17].is_linked:
-            use_tex(mat_node.inputs[17]);
-        
+    
         emissive_inten=mat_node.inputs[18].default_value
         mat_info['emissive_inten']=emissive_inten
         
@@ -79,6 +76,9 @@ blender_mat_info['obj_mat']=obj_mat_list
 
 print('----write to json file-----')
 import json
+import os
+directory_path = os.getcwd()
+print('current work path:',directory_path)
 
 with open('objects_mat.json','w') as f:
     json.dump(blender_mat_info, f,indent=4,sort_keys=True)
