@@ -23,7 +23,10 @@ for collection in bpy.data.collections:
             #convert to a Y-axis position, because vertexes positions are in Y-axis            
             info_json['loc']=[obj.location[0],obj.location[2],-1*obj.location[1]]
             info_json['scale']=[obj.scale[0],obj.scale[2],obj.scale[1]]
-            info_json['rotation']=[obj.rotation_euler[0],obj.rotation_euler[2],obj.rotation_euler[1]]
+            info_json['rotation']=[
+            (180/3.1415926)*obj.rotation_euler[0],
+            (180/3.1415926)*obj.rotation_euler[2],
+            (180/3.1415926)*obj.rotation_euler[1]]
             
             info_json['name']=obj.name
     
