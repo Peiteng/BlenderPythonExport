@@ -7,9 +7,14 @@ import json
 resource_folder_path='C:/LensFlare/createdScenes/'
 # /collectedScenes/generatedGridScene/thickgrid_example/
 #/collectedScenes/generatedGridScene/thickerwall_grid/
-file_path=resource_folder_path+'/bunny_hole/';
+# PBRTestScene/Cerberus
+# junkshop/exported
+# experiment_scene_hole
+# single_point
+# GridShape
+file_path=resource_folder_path+'/collectedScenes/floating_lighthouse/';
 
-model_name='bunny_hole';
+model_name='for_pbr_mat';
 json_file=file_path+model_name+'.gltf';
 
 gltf_model = gltflib.GLTF.load(json_file)
@@ -57,7 +62,7 @@ for mat_id in range(0,len(gltf_mat_data)):
         else:
             mat_info['emissive_color']=current_mat.emissiveFactor
 
-        mat_info['emissive_strength'] =1.0
+        mat_info['emissive_strength'] =1
     else:
         mat_info['has_emissive_tex'] = True
         tex_id= current_mat.emissiveTexture.index
@@ -80,16 +85,16 @@ for mat_id in range(0,len(gltf_mat_data)):
 
     if current_mat.pbrMetallicRoughness.metallicFactor is None:
         mat_info['with_metallic'] = True
-        mat_info['metallic_factor'] = -1.0
+        mat_info['metallic_factor'] = 1.0
     else:
-        mat_info['with_metallic'] = False
+        mat_info['with_metallic'] = mat_info['has_metallicRoughness_tex']
         mat_info['metallic_factor'] = current_mat.pbrMetallicRoughness.metallicFactor
 
     if current_mat.pbrMetallicRoughness.roughnessFactor is None:
         mat_info['with_roughness'] = True
-        mat_info['roughness_factor'] = 0.0
+        mat_info['roughness_factor'] =1.0
     else:
-        mat_info['with_roughness'] = False
+        mat_info['with_roughness'] = mat_info['has_metallicRoughness_tex']
         mat_info['roughness_factor'] = current_mat.pbrMetallicRoughness.roughnessFactor
 
 
