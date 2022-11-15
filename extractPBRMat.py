@@ -3,7 +3,6 @@
 import gltflib
 import json
 
-
 resource_folder_path='C:/LensFlare/createdScenes/'
 # /collectedScenes/generatedGridScene/thickgrid_example/
 #/collectedScenes/generatedGridScene/thickerwall_grid/
@@ -12,10 +11,13 @@ resource_folder_path='C:/LensFlare/createdScenes/'
 # experiment_scene_hole
 # single_point
 # GridShape
-file_path=resource_folder_path+'/collectedScenes/floating_lighthouse/';
+# GridShape/warehouse_pallet
+# barricadas
+# USPallet/Processed/pallet
+file_path=resource_folder_path+'/USPallet/Processed/pallet/';
 
-model_name='for_pbr_mat';
-json_file=file_path+model_name+'.gltf';
+model_name='for_pbr_mat'
+json_file=file_path+model_name+'.gltf'
 
 gltf_model = gltflib.GLTF.load(json_file)
 gltf_mat_data=gltf_model.model.materials
@@ -76,7 +78,6 @@ for mat_id in range(0,len(gltf_mat_data)):
     if current_mat.pbrMetallicRoughness.metallicRoughnessTexture is None:
         mat_info['has_metallicRoughness_tex'] = False
         mat_info['metallicRoughness_tex_file'] = ''
-
     else:
         mat_info['has_metallicRoughness_tex'] = True
         tex_id=current_mat.pbrMetallicRoughness.metallicRoughnessTexture.index
@@ -97,14 +98,13 @@ for mat_id in range(0,len(gltf_mat_data)):
         mat_info['with_roughness'] = mat_info['has_metallicRoughness_tex']
         mat_info['roughness_factor'] = current_mat.pbrMetallicRoughness.roughnessFactor
 
-
     pbr_material.append(mat_info)
 
 # save the extracted material info
 output_file=file_path+'pbrmat.json'
 with open(output_file,'w') as f:
     json.dump(pbr_material, f,indent=4,sort_keys=True)
+
 # loop material name
 print('export pbr mat done...\n')
 # output mat name with albedo, normal, metalness, roughness
-
